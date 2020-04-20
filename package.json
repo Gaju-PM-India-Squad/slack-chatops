@@ -1,0 +1,61 @@
+{
+  "name": "bluepages-bot",
+  "version": "0.0.1",
+  "description": "a typescript slack bot with a slash command that direct messages the user the bluepages profile from a email address",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/bolt-app.js",
+    "pretest": "eslint src/**/*.ts",
+    "test": "jest --coverage",
+    "compile": "tsc",
+    "dev": "nodemon -e ts --exec \"npm run compile && npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.ibm.com:slack-at-ibm-bots/bluepages-bot.git"
+  },
+  "author": "shamil.patel@ibm.com",
+  "license": "ISC",
+  "dependencies": {
+    "@slack-at-ibm-bots/deploy": "git+ssh://git@github.ibm.com/slack-at-ibm-bots/deploy#semver:^5.0.0",
+    "@slack-at-ibm-bots/slapp-mongo": "git+ssh://git@github.ibm.com/slack-at-ibm-bots/slapp-mongo",
+    "@slack/bolt": "^1.4.1",
+    "@types/moment-timezone": "^0.5.12",
+    "@types/newrelic": "^5.11.2",
+    "@types/request": "^2.48.4",
+    "config": "^1.31.0",
+    "express": "^4.17.1",
+    "moment-timezone": "^0.5.27",
+    "mongoose": "^5.8.0",
+    "newrelic": "^6.3.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "sigsci": "https://dl.signalsciences.net/sigsci-module-nodejs/1.5.0/sigsci-module-nodejs-1.5.0.tgz",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.3",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/config": "0.0.34",
+    "@types/es6-promisify": "^6.0.0",
+    "@types/jest": "^24.0.23",
+    "@types/lodash": "^4.14.149",
+    "@types/mongoose": "^5.5.34",
+    "@types/node": "^12.12.17",
+    "@types/request-promise-native": "^1.0.17",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^22.21.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-simple-import-sort": "^4.0.0",
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0"
+  }
+}

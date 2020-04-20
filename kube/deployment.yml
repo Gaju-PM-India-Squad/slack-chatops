@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluepages-bot
+  labels:
+    app: bluepages-bot
+spec:
+  revisionHistoryLimit: 1
+  replicas: 3
+  selector:
+    matchLabels:
+        app: bluepages-bot
+  template:
+    metadata:
+      labels:
+        app: bluepages-bot
+    spec:
+      containers:
+        - name: bluepages-bot
+          image: us.icr.io/slack_at_ibm_bots/bluepages-bot:latest
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/run/sigsci/
+              name: sigsci
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: SLACK_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: slack_client_id
+            - name: SLACK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: slack_client_secret
+            - name: SLACK_SIGNING_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: slack_signing_secret
+            - name: MONGO_DB_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: db_encryption_key
+            - name: MONGO_DB_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: db_signing_key
+            - name: MONGO_DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: mongo_url
+            - name: NEWRELIC_LICENCE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: newrelic_license_key
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: db_user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: db_pass
+            - name: MONGO_CERT
+              valueFrom:
+                secretKeyRef:
+                  name: bluepages-bot
+                  key: mongo_cert
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 120
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 120
+        - name: sigsci-agent
+          image: registry.ng.bluemix.net/slack_at_ibm_bots/sigsci-agent:3.22.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/run/sigsci/
+              name: sigsci
+          env:
+            - name: SIGSCI_RPC_ADDRESS
+              value: unix:/var/run/sigsci/sigsci.sock
+            - name: SIGSCI_HOSTNAME
+              value: docker-test
+            - name: SIGSCI_ACCESSKEYID
+              valueFrom:
+                secretKeyRef:
+                  name: sigsci
+                  key: sigsci_access_key_id
+            - name: SIGSCI_SECRETACCESSKEY
+              valueFrom:
+                secretKeyRef:
+                  name: sigsci
+                  key: sigsci_secret_access_key
+      volumes:
+        - name: sigsci
+          emptyDir: {}

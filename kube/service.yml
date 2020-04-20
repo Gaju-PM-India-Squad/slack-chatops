@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: bluepages-bot
+  name: bluepages-bot
+spec:
+  ports:
+    - port: 80
+      targetPort: 8081
+  selector:
+    app: bluepages-bot
